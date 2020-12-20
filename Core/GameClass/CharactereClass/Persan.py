@@ -4,4 +4,4 @@ class Persan(Player):
 
     def actions(self, room, otherPerson, otherPersons):
         self.playerMove(room)
-        otherPerson.playerMove(otherPerson)
+        otherPerson.playerMove(room)
