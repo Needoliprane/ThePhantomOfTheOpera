@@ -2,7 +2,7 @@ class Room:
     def __init__(self, id):
         self.light = True
         self.lock = False
-        self.roomId = 0
+        self.roomId = id
         self.playerInTheRoom = []
 
 

@@ -1,6 +1,6 @@
 from GameClass.Player import Player
 
-class Moncharmin(Player):
+class Christine(Player):
 
     def actions(self, room, otherPerson, otherPersons):
         for player in otherPersons:
