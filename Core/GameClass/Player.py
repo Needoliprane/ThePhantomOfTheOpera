@@ -20,7 +20,7 @@ class Player:
 #---------------------------------------------- Logical part of player movement
 
 #---------------------------------------------- Logical part of player alibi
-    def isAlibi(self):
+    def getAlibi(self):
         return (self.alibi)
 
     def UseAlibi(self):

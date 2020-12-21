@@ -5,5 +5,5 @@ class Joseph(Player):
     def actions(self, room, otherPerson, otherPersons):
         if self.room.isOn() == True:
             self.room.switchOffTheLight()
-        if self.room.isOn() == False:
+        else:
             self.room.switchOnTheLight()
