@@ -38,7 +38,7 @@ class Room:
     def unlockTheRoom(self):
         self.lock = False
 
-    def lockOnTheRoom(self):
+    def lockTheRoom(self):
         self.lock = True
 
     def isLock(self):
