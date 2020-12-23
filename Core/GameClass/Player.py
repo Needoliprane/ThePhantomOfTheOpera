@@ -1,9 +1,13 @@
+from LogicClass.MonteCarloClass.MonteCarloInspector import MonteCarloInspector
+
 class Player:
-    def __init__(self, room, isInspector, isPhantom):
+    def __init__(self, room, isInspector, isPhantom, id):
         self.room = room
         self.isInspector = isInspector
         self.isPhantom = isPhantom
         self.alibi = False
+        self.id = id
+        self.montCarloInspector = None
         self.room.addPlayerInTheRoom(self)
 
 #---------------------------------------------- Logical part of player movement
@@ -29,3 +33,19 @@ class Player:
             return (True)
         return (False)
 #---------------------------------------------- Logical part of player alibi
+
+#---------------------------------------------- Logical part of player Scream
+    def scream(self):
+        if (self.isPhantom == True and (len(self.room.getPlayers()) == 1 or self.room.isOn() == False)):
+            print("Scream !")
+            return (True)
+        return (False)
+#---------------------------------------------- Logical part of player Scream
+
+#---------------------------------------------- Logical part of player inspector
+    def inspectorWork(self, screamList, allPlayers):
+        if (self.isInspector == False): return
+        if (self.montCarloInspector == None) : self.montCarloInspector = MonteCarloInspector()
+        self.montCarloInspector.updateTree(screamList, self.room.getPlayers(), allPlayers)
+        self.montCarloInspector.getPhantom()
+#---------------------------------------------- Logical part of player inspector

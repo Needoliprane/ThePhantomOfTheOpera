@@ -5,7 +5,6 @@ class Room:
         self.roomId = id
         self.playerInTheRoom = []
 
-
     def getPlayers(self):
         return (self.playerInTheRoom)
 
