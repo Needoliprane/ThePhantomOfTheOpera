@@ -7,8 +7,7 @@ class Player:
         self.isPhantom = isPhantom
         self.alibi = False
         self.id = id
-        self.montCarloInspector = None
-        self.room.addPlayerInTheRoom(self)
+        self.monteCarloInspector = None
 
 #---------------------------------------------- Logical part of player movement
     def playerMove(self, nextRoom):
@@ -45,7 +44,12 @@ class Player:
 #---------------------------------------------- Logical part of player inspector
     def inspectorWork(self, screamList, allPlayers):
         if (self.isInspector == False): return
-        if (self.montCarloInspector == None) : self.montCarloInspector = MonteCarloInspector()
-        self.montCarloInspector.updateTree(screamList, self.room.getPlayers(), allPlayers)
-        self.montCarloInspector.getPhantom()
+        if (self.monteCarloInspector == None) : self.monteCarloInspector = MonteCarloInspector()
+        self.monteCarloInspector.updateTree(screamList, self.room.getPlayers(), allPlayers)
+        return self.monteCarloInspector.getPhantom()
+
+    def guessPhantom(self):
+        if (self.isInspector == False): return
+        if (self.monteCarloInspector == None) : self.monteCarloInspector = MonteCarloInspector()
+        return self.monteCarloInspector.guessPhantom()
 #---------------------------------------------- Logical part of player inspector
