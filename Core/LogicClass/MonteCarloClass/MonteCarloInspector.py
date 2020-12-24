@@ -6,15 +6,17 @@ class MonteCarloInspector:
 
     def updateTree(self, screamList, playerInTheRoom, allPlayers):
         if (True not in screamList): return
-
-        for player in allPlayers:
-            for playerI in playerInTheRoom:
-                if (player.id == playerI.id):
-                    continue
-                else:
-                    self.tree.addCoupable(playerId=player.id)
+        missingOnes = set(allPlayers).difference(set(playerInTheRoom))
+        while missingOnes:
+            missingOne = missingOnes.pop()
+            self.tree.addCoupable(playerId=missingOne.id)
 
     def getPhantom(self):
         res = list(map(lambda x:x.refreshUCB(),self.tree.headCell.childCell))
-        print("UCB => ", res)
         return (res)
+
+    def guessPhantom(self):
+        res = list(map(lambda x:x.refreshUCB(),self.tree.headCell.childCell))
+        if (len(res) == 1 and res[0] > 3):
+            return (self.tree.headCell.childCell[0].playerId)
+        return self.tree.chooseLeaf(self.tree.headCell)

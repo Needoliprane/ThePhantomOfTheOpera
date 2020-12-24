@@ -29,8 +29,12 @@ class ArborescenteTree:
             return
         res = []
         for cell in node.childCell:
-            res.append(cell.refreshUCB())
             cell.visit += 1
             cell.parentCell.childVisit += 1
-        self.chooseLeaf(node.childCell[res.index(max(res))])
+            res.append(cell.refreshUCB())
+        if (res.count(max(res)) > 1):
+            return
+        if (node.childCell[res.index(max(res))].childCell == []):
+            return (node.childCell[res.index(max(res))].playerId)
+        return self.chooseLeaf(node.childCell[res.index(max(res))])
 #---------------------------------------------- Logical part of arborescenteTree
