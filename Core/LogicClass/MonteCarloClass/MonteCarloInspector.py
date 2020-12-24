@@ -4,12 +4,17 @@ class MonteCarloInspector:
     def __init__(self):
         self.tree = ArborescenteTree()
 
-    def updateTree(self, screamList, playerInTheRoom, allPlayers):
+    def updateTree(self, screamList, room, allPlayers):
         if (True not in screamList): return
-        missingOnes = set(allPlayers).difference(set(playerInTheRoom))
-        while missingOnes:
-            missingOne = missingOnes.pop()
-            self.tree.addCoupable(playerId=missingOne.id)
+
+        if (room.isOn() == True):
+            missingOnes = set(allPlayers).difference(set(room.getPlayers()))
+            while missingOnes:
+                missingOne = missingOnes.pop()
+                self.tree.addCoupable(playerId=missingOne.id)
+        else:
+            for player in room.getPlayers():
+                self.tree.addCoupable(playerId=player.id)
 
     def getPhantom(self):
         res = list(map(lambda x:x.refreshUCB(),self.tree.headCell.childCell))

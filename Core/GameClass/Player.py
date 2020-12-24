@@ -45,7 +45,7 @@ class Player:
     def inspectorWork(self, screamList, allPlayers):
         if (self.isInspector == False): return
         if (self.monteCarloInspector == None) : self.monteCarloInspector = MonteCarloInspector()
-        self.monteCarloInspector.updateTree(screamList, self.room.getPlayers(), allPlayers)
+        self.monteCarloInspector.updateTree(screamList, self.room, allPlayers)
         return self.monteCarloInspector.getPhantom()
 
     def guessPhantom(self):
