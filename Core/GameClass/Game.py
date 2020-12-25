@@ -2,6 +2,7 @@ import random
 
 from GameClass.Player                           import Player
 from GameClass.Room                             import Room
+from GameClass.RunningJob                       import RunningJob
 
 from GameClass.CharactereClass.Christine        import Christine
 from GameClass.CharactereClass.Joseph           import Joseph
@@ -25,21 +26,26 @@ CONFIG = {
 
 class Game:
     def __init__(self, numberOfRoom, numberOfPlayer):
-        self.numberOfRoom = numberOfRoom
         self.room = []
-        self.numberOfPlayer = numberOfPlayer
         self.players = []
+        self.jobTools = None
+        self.numberOfRoom = numberOfRoom
+        self.numberOfPlayer = numberOfPlayer
+        self.inspectorId = 0
+        self.phantomId = 0
         self.isRunning = True
+        self.singerStatus = 20
 
+#---------------------------------------------- Build game elem
     def buildPlayerList(self):
         oursHeroes = random.sample(range(0, self.numberOfPlayer), 2)
-        inspector = oursHeroes[0]
-        phantom = oursHeroes[1]
+        inspector = self.inspectorId = oursHeroes[0]
+        phantom = self.phantomId = oursHeroes[1]
 
         for id in list(range(self.numberOfPlayer)):
-            if (id == inspector) : player = CONFIG[str(id)](self.room[0], True, False, id)
-            elif (id == phantom) : player = CONFIG[str(id)](self.room[0], False, True, id)
-            else : player = CONFIG[str(id)](self.room[0], False, False, id) 
+            if (id == inspector) : player = CONFIG[str(id)](self.room[0], True, False, id, self.numberOfRoom, self.room)
+            elif (id == phantom) : player = CONFIG[str(id)](self.room[0], False, True, id, self.numberOfRoom, self.room)
+            else : player = CONFIG[str(id)](self.room[0], False, False, id, self.numberOfRoom, self.room)
             self.players.append(player)
             self.room[0].addPlayerInTheRoom(player)
 
@@ -47,11 +53,53 @@ class Game:
         for i in range(0, self.numberOfRoom):
             self.room.append(Room(i))
 
+    def buildJob(self):
+        self.jobTools = RunningJob(self.inspectorId, self.phantomId, self.room, self.numberOfRoom)
+
     def initGame(self):
         self.buildRoomList()
         self.buildPlayerList()
+        self.buildJob()
+#---------------------------------------------- Build game element
+
+#---------------------------------------------- Manage win condition
+    def updateSingerStatus(self, screamList):
+        oldSingerStatus = self.singerStatus
+        runningJobList = list(map(lambda room:room.isRunningJob(), self.room))
+        if (True not in screamList and True not in runningJobList):
+            self.singerStatus += 10
+        if (self.singerStatus > 120):
+            self.isRunning = False
+        if (self.singerStatus < 0):
+            self.isRunning = False
+        if (oldSingerStatus == self.singerStatus):
+            self.singerStatus -= 5
+
+    def killPhantom(self, inspectorGuess):
+        playerId = next((item for item in inspectorGuess if item is not None), None)
+        if (playerId == None):
+            return
+        if (self.players[playerId].isPhantom == True):
+            if (self.players[playerId].UseAlibi() == False):
+                self.isRunning = False
+                print("You find the phantom !")
+            else:
+                print("He wasn't the phantom")
+        else:
+            print("He wasn't the phantom")
+#---------------------------------------------- Manage win condition
+
+    def moveMagenement(self):
+        map(lambda player:player.smartMove(), self.players)
+        map(lambda player:player.smartMove(True), self.players)
 
     def GameLoop(self):
-        while (1):
+        while self.isRunning == True:
+            self.jobTools.addJobs()
             scream = list(map(lambda player:player.scream(), self.players))
-            inspector = list(map(lambda player:player.inspectorWork(scream, self.players), self.players))
+            print(scream)
+            print(list(map(lambda player:player.inspectorWork(scream, self.players), self.players)))
+            print(list(map(lambda player:player.guessPhantom(), self.players)))
+            self.moveMagenement()
+            self.updateSingerStatus(scream)
+
