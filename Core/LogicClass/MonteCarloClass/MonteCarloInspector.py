@@ -11,10 +11,10 @@ class MonteCarloInspector:
             missingOnes = set(allPlayers).difference(set(room.getPlayers()))
             while missingOnes:
                 missingOne = missingOnes.pop()
-                self.tree.addCoupable(playerId=missingOne.id)
+                self.tree.addPossibilities(id=missingOne.id)
         else:
             for player in room.getPlayers():
-                self.tree.addCoupable(playerId=player.id)
+                self.tree.addPossibilities(id=player.id)
 
     def getPhantom(self):
         res = list(map(lambda x:x.refreshUCB(),self.tree.headCell.childCell))
