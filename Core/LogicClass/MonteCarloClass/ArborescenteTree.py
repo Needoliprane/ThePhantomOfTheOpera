@@ -41,7 +41,7 @@ class ArborescenteTree:
             cell.visit += 1
             cell.parentCell.childVisit += 1
             res.append(cell.refreshUCB())
-        if (res.count(max(res)) > 1):
+        if (res.count(max(res)) > 1 or max(res) < 15):
             return
         if (node.childCell[res.index(max(res))].childCell == []):
             return (node.childCell[res.index(max(res))].playerId)

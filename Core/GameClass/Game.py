@@ -70,6 +70,7 @@ class Game:
             self.singerStatus += 10
         if (self.singerStatus > 120):
             self.isRunning = False
+            print("Victory for the opera")
         if (self.singerStatus < 0):
             self.isRunning = False
         if (oldSingerStatus == self.singerStatus):
@@ -89,17 +90,22 @@ class Game:
             print("He wasn't the phantom")
 #---------------------------------------------- Manage win condition
 
-    def moveMagenement(self):
-        map(lambda player:player.smartMove(), self.players)
-        map(lambda player:player.smartMove(True), self.players)
-
     def GameLoop(self):
         while self.isRunning == True:
             self.jobTools.addJobs()
+            print("job ->", list(map(lambda room:room.isRunningJob(), self.room)))
+            list(map(lambda player:player.smartMove(), self.players))
+            list(map(lambda player:player.smartMove(True), self.players))
+            print("job ->", list(map(lambda room:room.isRunningJob(), self.room)))
+
             scream = list(map(lambda player:player.scream(), self.players))
+
             print(scream)
+
             print(list(map(lambda player:player.inspectorWork(scream, self.players), self.players)))
-            print(list(map(lambda player:player.guessPhantom(), self.players)))
-            self.moveMagenement()
+
+            guess = list(map(lambda player:player.guessPhantom(), self.players))
+            self.killPhantom(guess)
+
             self.updateSingerStatus(scream)
 
