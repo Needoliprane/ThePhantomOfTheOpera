@@ -1,22 +1,31 @@
-from LogicClass.MonteCarloClass.MonteCarloInspector import MonteCarloInspector
+from LogicClass.MonteCarloClass.MonteCarloInspector     import MonteCarloInspector
+from LogicClass.MonteCarloClass.MonteCarloMove          import MonteCarloMove
 
 class Player:
-    def __init__(self, room, isInspector, isPhantom, id):
+    def __init__(self, room, isInspector, isPhantom, id, numberOfRoom, roomList):
         self.room = room
         self.isInspector = isInspector
         self.isPhantom = isPhantom
         self.alibi = False
+        self.roomList = roomList
         self.id = id
+        self.numberOfRoom = numberOfRoom
         self.monteCarloInspector = None
+        self.monteCarloMove = None
 
 #---------------------------------------------- Logical part of player movement
     def playerMove(self, nextRoom):
-        if (nextRoom == None or nextRoom.isLock() == True):
+        if (nextRoom == None or nextRoom.isLock() == True or self.room.isLock() == True):
             return (False)
         self.room.removePlayerOfTheRoom(self)
         self.room = nextRoom
         self.room.addPlayerInTheRoom(self)
+        self.room.doTheJob()
         return (True)
+
+    def smartMove(self, specialTurn=False):
+        if (self.monteCarloMove == None): self.monteCarloMove = MonteCarloMove(self.isInspector, self.isPhantom, self.numberOfRoom)
+        self.monteCarloMove.wiseMove(self, self.roomList, specialTurn)
 
     def getRoom(self):
         return self.room
