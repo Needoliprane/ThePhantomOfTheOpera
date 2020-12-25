@@ -4,6 +4,7 @@ class Room:
         self.lock = False
         self.roomId = id
         self.playerInTheRoom = []
+        self.runningJob = False
 
     def getPlayers(self):
         return (self.playerInTheRoom)
@@ -43,3 +44,14 @@ class Room:
     def isLock(self):
         return self.lock
 #---------------------------------------------- Logical part of Room and Lock
+
+#---------------------------------------------- Logical part of Room and job
+    def addTheJob(self):
+        self.runningJob = True
+
+    def doTheJob(self):
+        self.runningJob = False
+
+    def isRunningJob(self):
+        return self.runningJob
+#---------------------------------------------- Logical part of Room and job
