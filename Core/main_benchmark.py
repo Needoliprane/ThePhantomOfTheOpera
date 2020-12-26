@@ -18,7 +18,6 @@ def masterbBenchmark():
         gameController = Game(12, 8)
         gameController.initGame()
         value = gameController.GameLoop()
-        print("Phantom wins ? ", value)
         stop = time.time()
         res.append(value)
         durationList.append(stop-start)
