@@ -1,13 +1,12 @@
 #!/usr/local/bin/python
 
-from GameClass.Game import Game
-from GameClass.CharactereClass.Meg import Meg
-from GameClass.Room import Room
+from GameClass.Game                     import Game
 
 def master():
     gameController = Game(12, 8)
     gameController.initGame()
-    gameController.GameLoop()
+    value = gameController.GameLoop()
+    print("Phantom wins ? ", value)
 
 if __name__ == "__main__":
     master()
