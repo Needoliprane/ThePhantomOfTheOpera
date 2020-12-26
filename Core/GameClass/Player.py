@@ -16,11 +16,11 @@ class Player:
 #---------------------------------------------- Logical part of player movement
     def playerMove(self, nextRoom):
         if (nextRoom == None or nextRoom.isLock() == True or self.room.isLock() == True):
+            print("playerID : ", self.id, " is lock inside roomID ", self.room.id)
             return (False)
         self.room.removePlayerOfTheRoom(self)
         self.room = nextRoom
         self.room.addPlayerInTheRoom(self)
-        self.room.doTheJob()
         return (True)
 
     def smartMove(self, specialTurn=False):
@@ -62,3 +62,9 @@ class Player:
         if (self.monteCarloInspector == None) : self.monteCarloInspector = MonteCarloInspector()
         return self.monteCarloInspector.guessPhantom()
 #---------------------------------------------- Logical part of player inspector
+
+#---------------------------------------------- Logical part of player Job
+    def playerDoJob(self):
+        if (self.isInspector == False and self.isPhantom == False):
+            self.room.doTheJob()
+#---------------------------------------------- Logical part of player Job

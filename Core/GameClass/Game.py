@@ -34,7 +34,7 @@ class Game:
         self.inspectorId = 0
         self.phantomId = 0
         self.isRunning = True
-        self.singerStatus = 20
+        self.singerStatus = 30
 
 #---------------------------------------------- Build game elem
     def buildPlayerList(self):
@@ -67,7 +67,7 @@ class Game:
         oldSingerStatus = self.singerStatus
         runningJobList = list(map(lambda room:room.isRunningJob(), self.room))
         if (True not in screamList and True not in runningJobList):
-            self.singerStatus += 15
+            self.singerStatus += 17
         if (self.singerStatus > 150):
             self.isRunning = False
             print("Victory for the opera")
@@ -75,7 +75,7 @@ class Game:
             print("Phantom Win")
             self.isRunning = False
         if (oldSingerStatus == self.singerStatus):
-            self.singerStatus -= 5
+            self.singerStatus -= 2
 
     def killPhantom(self, inspectorGuess):
         playerId = next((item for item in inspectorGuess if item is not None), None)
@@ -97,10 +97,10 @@ class Game:
             print("job ->", list(map(lambda room:room.isRunningJob(), self.room)))
             list(map(lambda player:player.smartMove(), self.players))
             list(map(lambda player:player.smartMove(True), self.players))
+            list(map(lambda player:player.playerDoJob(), self.players))
             print("job ->", list(map(lambda room:room.isRunningJob(), self.room)))
 
             scream = list(map(lambda player:player.scream(), self.players))
-
             print(scream)
 
             print(list(map(lambda player:player.inspectorWork(scream, self.players), self.players)))

@@ -21,8 +21,6 @@ class MonteCarloMove:
             else:
                 self.tree.addPossibilities(roomList[roomIndex].id)
         roomId = self.tree.chooseLeafMove(self.tree.headCell)
-        print("phantom ->", roomId)
-        print("phantom room len ->", len(roomList[roomId].getPlayers()))
         self.tree.headCell.childCell = []
         if (roomId != None):
             player.playerMove(roomList[roomId])
@@ -32,7 +30,6 @@ class MonteCarloMove:
     def wiseMoveInspector(self, player, roomList):
         if (player.monteCarloInspector == None):
             value = random.randint(0, self.numberOfRoom - 1)
-            print("inspector ->", value)
             player.playerMove(roomList[value])
             return
         roomPossibilities = random.sample(range(0, self.numberOfRoom), self.numberOfRoom - (int(self.numberOfRoom / 2)))
@@ -44,12 +41,14 @@ class MonteCarloMove:
                 else:
                     self.tree.addPossibilities(roomIndex, value=1)
         roomId = self.tree.chooseLeafMove(self.tree.headCell)
-        print("inspector ->", roomId)
         self.tree.headCell.childCell = []
         if (roomId != None):
+            roomList[roomId].switchOnTheLight()
             player.playerMove(roomList[roomId])
             return
-        player.playerMove(roomList[random.randint(0, self.numberOfRoom - 1)])
+        value = random.randint(0, self.numberOfRoom - 1)
+        roomList[value].switchOnTheLight()
+        player.playerMove(roomList[value])
 
     def wiseMoveCharacter(self, player, roomList):
         roomPossibilities = random.sample(range(0, self.numberOfRoom), int(self.numberOfRoom / 2))
@@ -61,9 +60,12 @@ class MonteCarloMove:
         roomId = self.tree.chooseLeafMove(self.tree.headCell)
         self.tree.headCell.childCell = []
         if (roomId != None):
+            roomList[roomId].switchOnTheLight()
             player.playerMove(roomList[roomId])
             return
-        player.playerMove(roomList[random.randint(0, self.numberOfRoom - 1)])
+        value = random.randint(0, self.numberOfRoom - 1)
+        roomList[value].switchOnTheLight()
+        player.playerMove(roomList[value])
 
     def wiseMove(self, player, roomList, specialTurn):
         if (self.isPhantom == True and specialTurn == True):
