@@ -100,6 +100,8 @@ class Game:
             list(map(lambda player:player.playerDoJob(), self.players))
             print("job ->", list(map(lambda room:room.isRunningJob(), self.room)))
 
+            list(map(lambda player:player.playerDoAction(self.players), self.players))
+
             scream = list(map(lambda player:player.scream(), self.players))
             print(scream)
 

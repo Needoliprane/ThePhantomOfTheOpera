@@ -33,7 +33,7 @@ class ArborescenteTree:
                 cell.visit += 1
             cell.refreshUCB()
 
-    def chooseLeaf(self, node):
+    def chooseLeaf(self, node, maxVal=15):
         if (node == None or node.childCell == []):
             return
         res = []
@@ -41,7 +41,7 @@ class ArborescenteTree:
             cell.visit += 1
             cell.parentCell.childVisit += 1
             res.append(cell.refreshUCB())
-        if (res.count(max(res)) > 1 or max(res) < 15):
+        if (res.count(max(res)) > 1 or max(res) < maxVal):
             return
         if (node.childCell[res.index(max(res))].childCell == []):
             return (node.childCell[res.index(max(res))].playerId)

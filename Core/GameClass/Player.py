@@ -1,5 +1,6 @@
 from LogicClass.MonteCarloClass.MonteCarloInspector     import MonteCarloInspector
 from LogicClass.MonteCarloClass.MonteCarloMove          import MonteCarloMove
+from LogicClass.MonteCarloClass.MonteCarloAction        import MonteCarloAction
 
 class Player:
     def __init__(self, room, isInspector, isPhantom, id, numberOfRoom, roomList):
@@ -12,6 +13,7 @@ class Player:
         self.numberOfRoom = numberOfRoom
         self.monteCarloInspector = None
         self.monteCarloMove = None
+        self.monteCarloAction = None
 
 #---------------------------------------------- Logical part of player movement
     def playerMove(self, nextRoom):
@@ -68,3 +70,9 @@ class Player:
         if (self.isInspector == False and self.isPhantom == False):
             self.room.doTheJob()
 #---------------------------------------------- Logical part of player Job
+
+#---------------------------------------------- Logical part of player Action
+    def playerDoAction(self, players):
+        if (self.monteCarloAction == None) : self.monteCarloAction = MonteCarloAction(self.isInspector, self.isPhantom, self.numberOfRoom, self.id)
+        self.monteCarloAction.manageAction(self.roomList, self, players)
+#---------------------------------------------- Logical part of player Action
