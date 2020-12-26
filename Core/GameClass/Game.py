@@ -67,11 +67,12 @@ class Game:
         oldSingerStatus = self.singerStatus
         runningJobList = list(map(lambda room:room.isRunningJob(), self.room))
         if (True not in screamList and True not in runningJobList):
-            self.singerStatus += 10
-        if (self.singerStatus > 120):
+            self.singerStatus += 15
+        if (self.singerStatus > 150):
             self.isRunning = False
             print("Victory for the opera")
         if (self.singerStatus < 0):
+            print("Phantom Win")
             self.isRunning = False
         if (oldSingerStatus == self.singerStatus):
             self.singerStatus -= 5
@@ -108,4 +109,5 @@ class Game:
             self.killPhantom(guess)
 
             self.updateSingerStatus(scream)
+            print("singer status =>",self.singerStatus)
 
