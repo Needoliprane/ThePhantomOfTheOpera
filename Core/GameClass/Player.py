@@ -47,7 +47,7 @@ class Player:
 #---------------------------------------------- Logical part of player Scream
     def scream(self):
         if (self.isPhantom == True and (len(self.room.getPlayers()) == 1 or self.room.isOn() == False)):
-            print("Scream !")
+            # print("Scream !")
             return (True)
         return (False)
 #---------------------------------------------- Logical part of player Scream

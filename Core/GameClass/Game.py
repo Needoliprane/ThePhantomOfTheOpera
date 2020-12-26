@@ -1,4 +1,7 @@
 import random
+import time
+from statistics import mean
+import matplotlib.pyplot as plt
 
 from GameClass.Player                           import Player
 from GameClass.Room                             import Room
@@ -35,6 +38,7 @@ class Game:
         self.phantomId = 0
         self.isRunning = True
         self.singerStatus = 30
+        self.isPhantomWinner = False
 
 #---------------------------------------------- Build game elem
     def buildPlayerList(self):
@@ -72,6 +76,7 @@ class Game:
             self.isRunning = False
             print("Victory for the opera")
         if (self.singerStatus < 0):
+            self.isPhantomWinner = True
             print("Phantom Win")
             self.isRunning = False
         if (oldSingerStatus == self.singerStatus):
@@ -86,30 +91,26 @@ class Game:
                 self.isRunning = False
                 print("You find the phantom !")
             else:
-                print("He wasn't the phantom")
+                pass
+                # print("He wasn't the phantom")
         else:
-            print("He wasn't the phantom")
+            pass
+            # print("He wasn't the phantom")
 #---------------------------------------------- Manage win condition
 
+#---------------------------------------------- GameLoop
     def GameLoop(self):
         while self.isRunning == True:
             self.jobTools.addJobs()
-            print("job ->", list(map(lambda room:room.isRunningJob(), self.room)))
             list(map(lambda player:player.smartMove(), self.players))
             list(map(lambda player:player.smartMove(True), self.players))
             list(map(lambda player:player.playerDoJob(), self.players))
-            print("job ->", list(map(lambda room:room.isRunningJob(), self.room)))
-
             list(map(lambda player:player.playerDoAction(self.players), self.players))
-
             scream = list(map(lambda player:player.scream(), self.players))
-            print(scream)
-
-            print(list(map(lambda player:player.inspectorWork(scream, self.players), self.players)))
-
+            list(map(lambda player:player.inspectorWork(scream, self.players), self.players))
             guess = list(map(lambda player:player.guessPhantom(), self.players))
             self.killPhantom(guess)
-
             self.updateSingerStatus(scream)
-            print("singer status =>",self.singerStatus)
+        return (self.isPhantomWinner)
+#---------------------------------------------- GameLoop
 
